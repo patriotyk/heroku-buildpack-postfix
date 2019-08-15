@@ -1,0 +1,24 @@
+#!/bin/sh -e
+
+wget http://cdn.postfix.johnriley.me/mirrors/postfix-release/official/postfix-3.4.6.tar.gz
+tar -xf postfix-3.4.6.tar.gz
+POSTFIX=$HOME/postfix
+mkdir -p $POSTFIX/etc
+ls -la
+cp -r $1/configs/postfix $POSTFIX/etc
+cd postfix-3.4.6
+
+# make makefiles pie=yes shared=no dynamicmaps=no config_directory=$POSTFIX/etc/postfix \
+#                command_directory=$POSTFIX/usr/bin \
+#                daemon_directory=$POSTFIX/usr/libexec/postfix \
+#                data_directory=$POSTFIX/var/lib/postfix \
+#                mail_spool_directory=$POSTFIX/var/spool \
+#                meta_directory=$POSTFIX/etc/postfix \
+#                newaliases_path=$POSTFIX/usr/bin/newaliases
+#                queue_directory=$POSTFIX/var/spool/postfix
+
+make makefiles pie=yes shared=no dynamicmaps=no install_root=$POSTFIX
+
+env
+exit 1
+make upgrade
